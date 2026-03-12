@@ -14,9 +14,13 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 const corsOptions = {
-  origin: process.env.CLIENT_ORIGIN || '*',
+  origin: (origin, callback) => {
+    // Allow all origins (including undefined for tools like curl)
+    callback(null, true);
+  },
   credentials: true
 };
+
 app.use(cors(corsOptions));
 
 if (process.env.NODE_ENV !== 'production') {
